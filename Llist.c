@@ -5,6 +5,7 @@ struct location{
   struct location * address;
 };
 typedef struct location* lct;
+int listsize;
 lct first = NULL;
 lct create()
 {
@@ -22,6 +23,44 @@ lct insert(lct first,int item)
     temp->address=first;
 
   first=temp;
+  listsize++;
+  return(first);
+}
+lct insertpos(lct first,int item,int pos){
+  if(pos>listsize){printf("No such position exists\n");return(first);}
+  lct temp;
+  temp=create();
+  temp->item=item;
+  temp->address=NULL;
+  if(pos==1){
+    first=temp;
+    listsize++;
+    return(first);
+  }
+  else{
+    lct cur;
+    cur=first;
+    for(int i=0;i<pos-2;i++){
+      cur=cur->address;
+    }
+    temp->address=cur->address;
+    cur->address=temp;
+    listsize++;
+    return(first);
+  }
+}
+lct insertlast(lct first,int item){
+  lct temp;
+  temp=create();
+  temp->item=item;
+  temp->address=NULL;
+  if(first==NULL){first=temp;return(first);}
+  lct cur;
+  cur=first;
+  while(cur->address!=NULL){
+    cur=cur->address;
+  }
+  cur->address=temp;
   return(first);
 }
 void display(lct first)
@@ -39,6 +78,7 @@ void display(lct first)
   }
 }
 lct deletepos(lct first,int pos){
+  if(pos>listsize){printf("No such position exists\n");return(first);}
   lct cur,prev;
   cur=first;
   if(first==NULL){
@@ -49,6 +89,7 @@ lct deletepos(lct first,int pos){
     first=first->address;
     printf("The deleted item is %d\n",cur->item);
     free(cur);
+    listsize--;
     return(first);
   }
   for(int i=0;i<pos-1;i++){
@@ -57,6 +98,7 @@ lct deletepos(lct first,int pos){
   }
   printf("Deleting item=%d\n",cur->item);
   prev->address=cur->address;
+  listsize--;
   free(cur);
   return(first);
 }
@@ -69,6 +111,7 @@ lct dfirst(lct first){
   cur=first;
   printf("The deleted item is %d\n",cur->item);
   first=first->address;
+  listsize--;
   free(cur);
   return(first);
 }
@@ -94,16 +137,46 @@ lct dlast(lct first){
     return(first);
   }
   prev->address=NULL;
+  listsize--;
   free(cur);
   return(first);
 
 }
+lct reverse(lct first){
+  lct cur,prev;
+  prev=first;
+  first=first->address;
+  cur=first;
+  prev->address=NULL;
+  while(first!=NULL){
+    first=first->address;
+    cur->address=prev;
+    prev=cur;
+    cur=first;
+  }
+  printf("prev = %d\n",prev->item);
+  first=prev;
+  return(first);
+}
+lct sort(lct first){
+  for(lct i=first;i->address!=NULL;i=i->address){
+    for(lct j=i->address;j!=NULL;j=j->address){
+      if(i->item>j->item){
+        int temp;
+        temp=i->item;
+        i->item=j->item;
+        j->item=temp;
+      }
+    }
+  }
+  return(first);
+}
 void main()
 {
-  int choice,item;
+  int choice,item,pos;
   for(;;)
   {
-    printf("1.Insert\n2.Display\n3.Delete Position\n4.Delete First\n5.Delete Last\n6.Exit\nEnter choice:");
+    printf("1.Insert First\n2.Display\n3.Delete Position\n4.Delete First\n5.Delete Last\n6.Insert Position\n7.Insert Last\n8.Reverse\n9.Sort\n10.Exit\nEnter choice:");
     scanf("%d",&choice);
     switch (choice) {
       case 1:printf("Enter value to be inserted\n");
@@ -119,6 +192,20 @@ void main()
       case 4:first=dfirst(first);
       break;
       case 5:first=dlast(first);
+      break;
+      case 6: printf("Enter value to be inserted\n");
+      scanf("%d",&item);
+      printf("Enter position\n");
+      scanf("%d",&pos);
+      first=insertpos(first,item,pos);
+      break;
+      case 7:printf("Enter value to be inserted\n");
+      scanf("%d",&item);
+      first=insertlast(first,item);
+      break;
+      case 8: first=reverse(first);
+      break;
+      case 9:first=sort(first);
       break;
       default: exit(0);
     }
