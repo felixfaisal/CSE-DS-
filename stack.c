@@ -6,11 +6,11 @@ struct stack
   struct stack* next;
 };
 typedef struct stack* stk;
-stk top=null;
+stk top=NULL;
 stk create()
 {
   stk node;
-  node=(stk)malloc(struct stack);
+  node=(stk)malloc(sizeof(struct stack));
   return(node);
 }
 void push(){
@@ -42,13 +42,14 @@ void main()
 {
   int choice;
   for(;;){
-    printf("Enter your choice\n1.Push\n2.Pop\n3.Display\n4.Exit");
+    printf("Enter your choice\n1.Push\n2.Pop\n3.Display\n4.Exit\n");
+    scanf("%d",&choice );
     switch(choice){
       case 1: push();
-      displaay();
+      display();
       break;
       case 2: pop();
-      dispaly();
+      display();
       break;
       case 3: display();
       break;
