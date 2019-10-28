@@ -171,12 +171,30 @@ lct sort(lct first){
   }
   return(first);
 }
+lct removeo(lct first){
+  lct cur;
+  lct trash;
+  lct prev;
+  cur=first->address;
+  while(cur!=NULL){
+    for(int i=0;i<1;i++){
+      prev=cur;
+      cur=cur->address;
+    }
+    printf("Deleting %d\n",cur->item);
+    prev->address=cur->address;
+    trash=cur;
+    cur=cur->address;
+    free(trash);
+  }
+  return(first);
+}
 void main()
 {
   int choice,item,pos;
   for(;;)
   {
-    printf("1.Insert First\n2.Display\n3.Delete Position\n4.Delete First\n5.Delete Last\n6.Insert Position\n7.Insert Last\n8.Reverse\n9.Sort\n10.Exit\nEnter choice:");
+    printf("1.Insert First\n2.Display\n3.Delete Position\n4.Delete First\n5.Delete Last\n6.Insert Position\n7.Insert Last\n8.Reverse\n9.Sort\n10.Remove Odd position elements\n11.Exit\nEnter choice:");
     scanf("%d",&choice);
     switch (choice) {
       case 1:printf("Enter value to be inserted\n");
@@ -206,6 +224,8 @@ void main()
       case 8: first=reverse(first);
       break;
       case 9:first=sort(first);
+      break;
+      case 10: first=removeo(first);
       break;
       default: exit(0);
     }
