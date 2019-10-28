@@ -176,6 +176,7 @@ lct removeo(lct first){
   lct trash;
   lct prev;
   cur=first->address;
+  if(cur->address==NULL || first==NULL){printf("Cannot perform this operation"); return(first);}
   while(cur!=NULL){
     for(int i=0;i<1;i++){
       prev=cur;
